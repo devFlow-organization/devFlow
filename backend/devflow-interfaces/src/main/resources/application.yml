@@ -1,0 +1,42 @@
+# Database Configuration
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/devflow
+      database: devflow
+  
+  # CORS Configuration
+  web:
+    cors:
+      allowed-origins: http://localhost:3000,http://127.0.0.1:3000
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+  
+  # DevTools Configuration
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/kotlin
+      exclude: static/**,public/**,templates/**
+    livereload:
+      enabled: true
+
+# GitHub OAuth Configuration
+oauth:
+  github:
+    client-id: Iv23lij6z2GojB8OffFO
+    client-secret: 57ad2fe28062ef8a9944c8b87bfd91d6649ee556
+    redirect-uri: http://localhost:8080/api/auth/github/callback
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: false
+        http-only: true
+      timeout: 30m 

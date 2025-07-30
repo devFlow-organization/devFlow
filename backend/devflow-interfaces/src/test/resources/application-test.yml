@@ -1,0 +1,18 @@
+# Test Database Configuration
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/devflow-test
+      database: devflow-test
+
+# Disable GitHub OAuth for tests
+oauth:
+  github:
+    client-id: test-client-id
+    client-secret: test-client-secret
+
+# Logging for tests
+logging:
+  level:
+    com.devflow: DEBUG
+    org.springframework.web: DEBUG 

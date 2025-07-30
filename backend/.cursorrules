@@ -1,0 +1,72 @@
+```
+### Language & Environment
+
+- **Response Language**: Always respond in Korean.
+- **Primary Stack**: Use the combination of **Kotlin LTS** and the **latest stable version of Spring Boot**.
+- **Build System**: Follow a **Gradle multi-module structure**.
+
+—
+
+### Project Structure & Architecture
+
+* **Module Configuration**:
+    * `devflow-common`: Common utilities, constants, and custom exception classes.
+    * `devflow-domain`: Domain entities, value objects, domain events, and repository interfaces.
+    * `devflow-application`: Application services, transaction management, and domain logic orchestration.
+    * `devflow-infrastructure`: Technical implementations such as JPA repository implementations and external API clients.
+    * `devflow-interfaces`: REST controllers, DTOs, and web configurations.
+
+* **Dependency Rule**:
+    * **Direction**: `interfaces` → `application` → `domain` ← `infrastructure`.
+    * **Principle**: The `domain` module must not have dependencies on external technologies. The `infrastructure` module implements interfaces from the `domain` module.
+
+—
+
+### Architectural Principles
+
+* **Domain-Driven Design (DDD)**: Business logic is concentrated in rich domain models that contain behavior. Avoid anemic domain models.
+* **Dependency Inversion Principle (DIP)**: High-level modules (e.g., `application`) should not depend on low-level modules (e.g., `infrastructure`). Depend on abstractions (interfaces) instead.
+* **Single Responsibility Principle (SRP)**: Every class and function must have only one single responsibility.
+
+—
+
+### Coding Conventions
+
+* **Style**: Adhere to the official Kotlin coding conventions. A functional programming style is preferred.
+* **Naming**:
+    * Classes: `PascalCase`
+    * Functions/Variables: `camelCase` (use meaningful and clear English words)
+    * Constants: `UPPER_SNAKE_CASE`
+* **Code Structure**:
+    * A function should do **only one thing**. It's recommended to keep function length **under 20 lines**.
+    * Always consider **null safety** when writing code.
+
+—
+
+### Security & Performance
+
+* **Security**:
+    * All external inputs **must be validated**.
+    * When using JPA, prevent SQL injection. Write dynamic queries safely using QueryDSL.
+* **Performance**:
+    * Proactively use **Fetch Joins** to prevent the **N+1 query problem**.
+    * Consider appropriate **indexing** and **caching strategies** when necessary.
+
+—
+
+### Testing Rules
+
+* **Principle**: All major business logic **must be covered by tests**. Prioritize unit tests.
+* **Test Naming**:
+    * Class: `{ClassName}Test`
+    * Method: Follow the `should_{expected_behavior}_when_{condition}` format.
+* **Environment**: Use **Testcontainers** for integration tests and **WireMock** for stubbing external APIs.
+
+—
+
+### Git Commit Rules
+
+* **Message Format**: `type(scope): description`
+* **Type**: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, etc.
+* **Example**: `feat(domain): Add business logic to User entity`
+```
