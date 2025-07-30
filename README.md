@@ -50,17 +50,6 @@ cd backend
 
 서버가 성공적으로 시작되면 `http://localhost:8080`에서 접근할 수 있습니다.
 
-#### 포트 충돌 해결
-만약 8080 포트가 이미 사용 중인 경우:
-
-```bash
-# 포트 사용 프로세스 확인
-netstat -ano | findstr :8080
-
-# 프로세스 종료 (PID는 위 명령어로 확인한 번호)
-taskkill /PID [PID] /F
-```
-
 ### 2. Frontend 실행
 
 #### 의존성 설치
@@ -79,22 +68,3 @@ npm start
 ```
 
 프론트엔드가 성공적으로 시작되면 `http://localhost:3000`에서 접근할 수 있습니다.
-
-## 전체 프로젝트 실행
-
-1. **MongoDB 시작**
-   ```bash
-   docker run -d -p 27017:27017 --name mongodb mongo:latest
-   ```
-
-2. **Backend 실행** (새 터미널)
-   ```bash
-   cd backend
-   ./gradlew :devflow-interfaces:bootRun
-   ```
-
-3. **Frontend 실행** (새 터미널)
-   ```bash
-   cd frontend
-   npm start
-   ```
