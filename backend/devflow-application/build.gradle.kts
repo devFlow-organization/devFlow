@@ -15,7 +15,10 @@ dependencies {
     
     // Validation
     implementation("org.springframework.boot:spring-boot-starter-validation:3.5.3")
-    
+
+    // Jackson for JSON
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+
     // Test dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
     testImplementation("io.mockk:mockk:1.13.8")
