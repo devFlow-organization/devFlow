@@ -1,11 +1,11 @@
-package com.devflow.domain.installation
+package com.devflow.domain.github.installation
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "installations")
-class Installation(
+@Table(name = "github_installations")
+class GitHubInstallation(
     @Id
     val id: Long, // GitHub Installation ID를 Primary Key로 사용
 
