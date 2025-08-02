@@ -1,6 +1,8 @@
 package com.devflow.interfaces.webhook
 
 import com.devflow.application.installation.GitHubAppInstallationService
+import com.devflow.interfaces.webhook.model.GitHubEvent
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,23 +18,28 @@ class GitHubWebhookController(
     @Value("\${github.app.webhook-secret}")
     private lateinit var webhookSecret: String
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @PostMapping
     fun handleGitHubWebhook(
-        @RequestHeader("X-GitHub-Event") event: String,
+        @RequestHeader("X-GitHub-Event") eventHeader: String, // 헤더는 문자열로 받습니다.
         @RequestHeader("X-Hub-Signature-256") signature: String,
         @RequestBody payload: String
     ): ResponseEntity<String> {
 
         verifySignature(signature, payload)
 
+        val event = GitHubEvent.fromValue(eventHeader)
         when (event) {
-            "installation" -> installationService.processInstallationEvent(payload)
-            "installation_repositories" -> installationService.processRepositoryEvent(payload)
-            "push" -> handlePushEvent(payload)
-            "pull_request" -> handlePullRequestEvent(payload)
-            "issues" -> handleIssuesEvent(payload)
-            // TODO: 필요한 다른 이벤트들(예: pull_request) 처리
-            else -> ResponseEntity.ok("Event $event received")
+            GitHubEvent.INSTALLATION -> installationService.processInstallationEvent(payload)
+            GitHubEvent.INSTALLATION_REPOSITORIES -> installationService.processRepositoryEvent(payload)
+            GitHubEvent.PUSH -> handlePushEvent(payload)
+            GitHubEvent.PULL_REQUEST -> handlePullRequestEvent(payload)
+            GitHubEvent.ISSUES -> handleIssuesEvent(payload)
+            null -> {
+                // 정의되지 않은 이벤트는 경고 로그를 남기고 무시합니다.
+                logger.warn("Received an unhandled GitHub event: {}", eventHeader)
+            }
         }
 
         return ResponseEntity.ok("Webhook received successfully")
@@ -51,18 +58,18 @@ class GitHubWebhookController(
         }
     }
 
-    private fun handlePushEvent(payload: String): ResponseEntity<String> {
+    private fun handlePushEvent(payload: String) {
+        logger.info("Processing push event...")
         // Push 이벤트 처리 로직
-        return ResponseEntity.ok("Push event processed")
     }
 
-    private fun handlePullRequestEvent(payload: String): ResponseEntity<String> {
+    private fun handlePullRequestEvent(payload: String) {
+        logger.info("Processing pull_request event...")
         // Pull Request 이벤트 처리 로직
-        return ResponseEntity.ok("Pull request event processed")
     }
 
-    private fun handleIssuesEvent(payload: String): ResponseEntity<String> {
+    private fun handleIssuesEvent(payload: String) {
+        logger.info("Processing issues event...")
         // Issues 이벤트 처리 로직
-        return ResponseEntity.ok("Issues event processed")
     }
 }
