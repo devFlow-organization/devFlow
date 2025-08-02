@@ -75,7 +75,7 @@ sealed class AuthResult {
 }
 
 data class UserDto(
-    val id: String?,
+    val id: Long?,
     val email: String,
     val name: String?,
     val provider: String,
