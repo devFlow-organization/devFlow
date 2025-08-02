@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 @Document(collection = "users")
 class User(
     @Id
-    val id: String? = null,
+    val id: Long? = null,
     
     @Field("email")
     val email: String,

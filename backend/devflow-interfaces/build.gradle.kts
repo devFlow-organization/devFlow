@@ -1,35 +1,45 @@
 plugins {
-    id("org.springframework.boot") version "3.5.3"
+    kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+    id("io.spring.dependency-management")
+}
+
+the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
+    }
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(project(":devflow-application"))
     implementation(project(":devflow-domain"))
     implementation(project(":devflow-infrastructure"))
 
-    // Spring Boot Web Starter
-    implementation("org.springframework.boot:spring-boot-starter-web:3.5.3")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
-    // Spring Security (CORS 지원을 위해)
-    implementation("org.springframework.boot:spring-boot-starter-security:3.5.3")
 
-    // Spring Boot DevTools (자동 재시작)
-    developmentOnly("org.springframework.boot:spring-boot-devtools:3.5.3")
-
-    // Jackson for JSON
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
-
-    // Kotlin Reflect
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.25")
-
-    // Test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.25")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.0")
+    testImplementation("org.springframework:spring-tx")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.21.0")
+    testImplementation("io.mockk:mockk:1.13.12")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
-} 
+}
+
+kotlin {
+    jvmToolchain(21)
+    compilerOptions {
+        freeCompilerArgs.addAll(listOf("-Xjsr305=strict"))
+    }
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
