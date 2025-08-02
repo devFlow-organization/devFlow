@@ -1,35 +1,38 @@
 package com.devflow.domain.github.installation
 
-import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.mapping.Field
 import java.time.LocalDateTime
 
-@Entity
-@Table(name = "github_installations")
-class GitHubInstallation(
+@Document(collection = "github_installations")
+data class GitHubInstallation(
     @Id
-    val id: Long, // GitHub Installation ID를 Primary Key로 사용
+    val id: Long,
 
-    @Column(nullable = false)
-    val installationId: Long,
-
-    @Column(nullable = false)
+    @Field("account_login")
     val accountLogin: String,
 
-    @Column(nullable = false)
+    @Field("account_type")
     val accountType: String,
 
-    @Column
+    @Field("avatar_url")
     val avatarUrl: String?,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Field("status")
     var status: InstallationStatus,
 
-    @Column(nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    // Spring Data MongoDB Auditing 기능으로 자동 생성됩니다.
+    @CreatedDate
+    @Field("created_at")
+    val createdAt: LocalDateTime? = null,
 
-    @Column(nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+    // Spring Data MongoDB Auditing 기능으로 자동 업데이트됩니다.
+    @LastModifiedDate
+    @Field("updated_at")
+    var updatedAt: LocalDateTime? = null
 )
 
 enum class InstallationStatus {
