@@ -1,28 +1,41 @@
 plugins {
+    kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+    kotlin("kapt")
+    id("io.spring.dependency-management")
 }
 
+the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
+    }
+}
+
+
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(project(":devflow-domain"))
     implementation(project(":devflow-infrastructure"))
-    
-    // Spring Boot Starter
-    implementation("org.springframework.boot:spring-boot-starter:3.5.3")
-    
-    // Spring Data JPA (트랜잭션 지원)
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.5.3")
-    
-    // Validation
-    implementation("org.springframework.boot:spring-boot-starter-validation:3.5.3")
 
-    // Jackson for JSON
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+    implementation("org.springframework:spring-tx")
+    implementation("org.springframework:spring-context")
 
-    // Test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
-    testImplementation("io.mockk:mockk:1.13.8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:1.9.25")
-    testImplementation(project(":devflow-domain"))
-    testImplementation(project(":devflow-infrastructure"))
-} 
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.12")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(21)
+    compilerOptions {
+        freeCompilerArgs.addAll(listOf("-Xjsr305=strict"))
+    }
+}

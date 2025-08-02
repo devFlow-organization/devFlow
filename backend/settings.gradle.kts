@@ -5,5 +5,12 @@ include(
     "devflow-domain",
     "devflow-infrastructure",
     "devflow-application",
-    "devflow-interfaces" 
+    "devflow-interfaces"
 )
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
