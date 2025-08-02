@@ -14,6 +14,7 @@ the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().a
 
 
 dependencies {
+    implementation(project(":devflow-common"))
     implementation(project(":devflow-domain"))
     implementation(project(":devflow-infrastructure"))
 

@@ -12,6 +12,9 @@ the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().a
 
 
 dependencies {
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
